@@ -1,4 +1,3 @@
-from flask import Blueprint
 from controller.Controller import Controller
 from entity.list import List
 import typing
@@ -7,8 +6,8 @@ import typing
 class ListController(Controller):
     def __init__(self):
         super().__init__()
-        self.list_controller = Blueprint('list_controller', __name__)
+        # self.list_controller = Blueprint('list_controller', __name__)
 
-    @self.list_controller.route("/lists")
+    @app.route("/lists")
     def lists(self) -> typing.List[List]:
         return communication.get_lists()

@@ -1,3 +1,4 @@
+from flask import redirect
 import requests
 import typing
 from entity.board import Board
@@ -32,6 +33,9 @@ class _Communication:
 
     def get_cards_from_list(self, list_id: str) -> typing.List[Card]:
         return requests.request("GET", self.base_url + "/boards/" + list_id + "/cards").content
+
+    def authorize(self, auth_url):
+        return redirect(auth_url, 302)
 
 
 communication = _Communication()
