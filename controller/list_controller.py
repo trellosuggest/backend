@@ -1,3 +1,4 @@
+from app import app
 from controller.Controller import Controller
 from entity.list import List
 import typing
@@ -10,4 +11,4 @@ class ListController(Controller):
 
     @app.route("/lists")
     def lists(self) -> typing.List[List]:
-        return communication.get_lists()
+        return self.communication.get_lists()

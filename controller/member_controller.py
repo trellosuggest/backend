@@ -1,3 +1,4 @@
+from app import app
 from controller.Controller import Controller
 from entity.member import Member
 import typing
@@ -10,13 +11,13 @@ class MemberController(Controller):
 
     @app.route("/boards/<board_id:str>/members")
     def members_from_board(self, board_id) -> typing.List[Member]:
-        return communication.get_members_from_board(board_id) \
+        return self.communication.get_members_from_board(board_id) \
 
 
     @app.route("/cards/<card_id:str>/members")
     def members_from_card(self, card_id) -> typing.List[Member]:
-        return communication.get_members_from_card(card_id)
+        return self.communication.get_members_from_card(card_id)
 
     @app.route("/members/<member_id:str>")
     def member(self, member_id) -> Member:
-        return communication.get_member(member_id)
+        return self.communication.get_member(member_id)

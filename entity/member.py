@@ -1,11 +1,15 @@
-from typing import List
+from db.settings import db
+from peewee import CharField, Model, AutoField
 
 
-class Member:
-    def __init__(self, _id: str, avatar_url: str, full_name, username: str, id_boards:  List[str], url: str):
-        self.id = _id
-        self.avatar_url = avatar_url
-        self.full_name = full_name
-        self.username = username
-        self.id_boards = id_boards
-        self.url = url
+class Member(Model):
+    member_id = AutoField(primary_key=True)
+    avatar_url = CharField(max_length=512)
+    full_name = CharField(max_length=128)
+    username = CharField(max_length=64)
+    url = CharField(unique=True, max_length=512)
+    roles = []
+
+    class Meta:
+        database = db
+        table_name = 'members'
