@@ -1,16 +1,5 @@
-from flask import Flask, request
+from flask import Flask
 from trello_communication.communication import communication
-import requests
-
-# from controller.board_controller import BoardController
-# from controller.card_controller import CardController
-# from controller.list_controller import ListController
-# from controller.member_controller import MemberController
-
-# bc = BoardController()
-# cc = CardController()
-# lc = ListController()
-# mc = MemberController()
 
 app = Flask(__name__)
 
@@ -27,6 +16,7 @@ def authorize():
         'response_type=token'
     )
     full_auth_url = 'http://trello.com/1/authorize/?' + '&'.join(auth_config)
+
     return communication.authorize(full_auth_url)
 
 
