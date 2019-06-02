@@ -33,7 +33,7 @@ class _Communication:
         return requests.request("GET", self.base_url + "/boards/" + board_id + "/cards").content
 
     def get_cards_from_list(self, list_id: str) -> typing.List[Card]:
-        return requests.request("GET", self.base_url + "/boards/" + list_id + "/cards").content
+        return requests.request("GET", self.base_url + "/lists/" + list_id + "/cards").content
 
     def authorize(self, auth_url):
         return redirect(auth_url, 302)
