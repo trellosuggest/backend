@@ -11,8 +11,7 @@ class MemberController(Controller):
 
     @app.route("/boards/<board_id:str>/members")
     def members_from_board(self, board_id) -> typing.List[Member]:
-        return self.communication.get_members_from_board(board_id) \
-
+        return self.communication.get_members_from_board(board_id)
 
     @app.route("/cards/<card_id:str>/members")
     def members_from_card(self, card_id) -> typing.List[Member]:

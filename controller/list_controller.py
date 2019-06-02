@@ -9,6 +9,6 @@ class ListController(Controller):
         super().__init__()
         # self.list_controller = Blueprint('list_controller', __name__)
 
-    @app.route("/lists")
-    def lists(self) -> typing.List[List]:
-        return self.communication.get_lists()
+    @app.route("/boards/<board_id:str>/lists")
+    def lists(self, board_id) -> typing.List[List]:
+        return self.communication.get_lists(board_id)

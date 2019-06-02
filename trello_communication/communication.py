@@ -11,10 +11,11 @@ class _Communication:
 
     def __init__(self):
         self.base_url = "https://api.trello.com/1"
-        self.current_user = Member("user44594125", "", "", "", list(), "")  # MOCK
+        self.token = ""
+        self.user_id = ""
 
     def get_boards(self) -> typing.List[Board]:
-        return requests.request("GET", self.base_url + "/members/" + str(self.current_user.id) + "/boards").content
+        return requests.request("GET", self.base_url + "/members/" + str(self.user_id) + "/boards").content
 
     def get_members_from_board(self, board_id: str) -> typing.List[Member]:
         return requests.request("GET", self.base_url + "/boards/" + board_id + "/members").content
