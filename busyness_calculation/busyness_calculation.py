@@ -1,32 +1,26 @@
-from typing import List
-
-
 class BusynessCalculation:
     @staticmethod
-    def calculate(people: List[List[int]]):
-        people.sort(key=lambda x: sum(x), reverse=True)
-
-        print(people)
+    def calculate(people):
+        people.sort(key=lambda x: sum([y['story'] for y in x['cards']]), reverse=True)
 
         for person in people:
-            person.sort()
+            person.sort(key=lambda x: x['story'])
 
-        sum_max = sum(people[0])
-        sum_min = sum(people[-1])
+        sum_max = sum([x['story'] for x in people[0]['cards']])
+        sum_min = sum([x['story'] for x in people[-1]['cards']])
 
-        while (sum_max != sum_min and (sum_max - people[0][0] != sum_min + people[0][0])
-               and sum_max > sum_min + people[0][0]):
-            people[-1].append(people[0][0])
-            del people[0][0]
+        while (sum_max != sum_min and (sum_max - people[0]['cards'][0]['story'] !=
+                                       sum_min + people[0]['cards'][0]['story'])
+               and sum_max > sum_min + people[0]['cards'][0]['story']):
+            people[-1]['cards'].append(people[0]['cards'][0])
+            del people[0]['cards'][0]
 
-            people.sort(key=lambda x: sum(x), reverse=True)
+            people.sort(key=lambda x: sum([y['story'] for y in x['cards']]), reverse=True)
 
             for person in people:
-                person.sort()
+                person.sort(key=lambda x: x['story'])
 
-            sum_max = sum(people[0])
-            sum_min = sum(people[-1])
-
-        print(people)
+            sum_max = sum([x['story'] for x in people[0]['cards']])
+            sum_min = sum([x['story'] for x in people[-1]['cards']])
 
         return people
