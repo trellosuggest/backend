@@ -35,6 +35,9 @@ class _Communication:
     def get_cards_from_list(self, list_id: str) -> typing.List[Card]:
         return requests.request("GET", self.base_url + "/lists/" + list_id + "/cards").content
 
+    def get_story_points_from_card(self, card_id: str):
+        return requests.request("GET", self.base_url + "/cards/" + card_id + "/pluginData").content
+
     def authorize(self, auth_url):
         return redirect(auth_url, 302)
 

@@ -83,6 +83,12 @@ def member(member_id) -> Member:
     return communication.get_member(member_id)
 
 
+@app.route("/cards/<string:card_id>/storyPoints")
+@cross_origin()
+def story_points_from_card(card_id):
+    return communication.get_story_points_from_card(card_id)
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run()
