@@ -34,10 +34,7 @@ def token():
     if request.method == "POST":
         communication.token = request.json['token']
         communication.user_id = request.json['user_id']
-        print('Token: ' + communication.token)
-        print('UserId: ' + communication.user_id)
         return '200'
-    print('/token mistake')
     return '405'
 
 
@@ -96,7 +93,7 @@ def rearrange():
         return communication.rearrange(request.json)
 
 
-@app.route('/ignore', methods=["POST"])
+@app.route('/ignored', methods=["POST"])
 @cross_origin()
 def ignore():
     if request.method == "POST":

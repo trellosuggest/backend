@@ -2,7 +2,7 @@ from peewee import PostgresqlDatabase
 
 db = PostgresqlDatabase(
     'trellosuggestDB',
-    user='smol',
-    password='',
+    user='postgres',
+    password='Yfevtyrj1',
     host='localhost'
 )

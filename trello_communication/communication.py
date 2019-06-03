@@ -16,7 +16,7 @@ class _Communication:
         self.key = "dfe27ae204fc44ddaac9cd606a4527fa"
         self.is_in_name = False
 
-    def get_boards(self) :
+    def get_boards(self):
         return json.dumps(
             [x for x in json.loads(self._doRequest("/members/" + str(self.user_id) + "/boards")) if not x['closed']])
 
@@ -30,7 +30,7 @@ class _Communication:
         return self._doRequest("/members/" + member_id)
 
     def get_lists(self, board_id: str):
-        b = Board.select().where(Board.board_id == board_id)
+        b = Board[board_id]
         db_lists = List.select().where(List.board == b)
         lists_content = self._doRequest("/boards/" + board_id + "/lists")
         lists = json.loads(lists_content)
@@ -51,7 +51,7 @@ class _Communication:
     def get_story_points_from_card(self, card_id: str):
         res = {}
         if self.is_in_name:
-            storypoints = self._doRequest("/cards/" + card_id + "/pluginData")
+            storypoints = self._doRequest("/cards/" + card_id)
             card_dict = json.loads(storypoints)
             name: str = card_dict['name']
 
@@ -62,44 +62,39 @@ class _Communication:
                     res['points'] = int(point[1: -1])
 
         else:
-            storypoints = requests.request("GET", self.base_url + "/cards/" + card_id + "/pluginData").content
+            storypoints = self._doRequest("/cards/" + card_id + "/pluginData")
             point_list = json.loads(storypoints)
 
-            if len(point_list) != 0:
+            if len(point_list) > 0:
                 point_dict = [x for x in point_list if x['idPlugin'] == '59d4ef8cfea15a55b0086614'][0]
-                res['points'] = int(json.loads(point_dict['value'])['points'])
+                tmp: dict = json.loads(point_dict['value'])
+                if 'points' in tmp.keys():
+                    res['points'] = tmp['points']
 
         return json.dumps(res)
 
     def rearrange(self, user_json):
-        user_list = json.loads(user_json)
-        for user in user_list:
-            user['cards'] = json.dumps(user['cards'])
-        return BusynessCalculation.calculate(user_list)
+        return json.dumps(BusynessCalculation.calculate(json.loads(user_json['body'])))
 
     def ignore(self, list_json):
-        list_list = json.loads(list_json)
+        list_list = list_json['lists']
+        board_id = list_list[0]['idBoard']
 
-        board = Board.select().where(Board.board_id == list_list[0]['idBoard'])
-
-        if not board.exists():
-            board = Board()
-            board.board_id = list_list[0]['idBoard']
-            board.save()
+        try:
+            Board[board_id]
+        except:
+            Board.insert(board_id=list_list[0]['idBoard']).execute()
+        board = Board[board_id]
 
         for _list in list_list:
-            db_l = List.select().where(List.list_id == _list['id'])
-
-            if db_l.exists():
+            try:
+                db_l = List[_list['id']]
                 db_l.is_ignored = _list['isIgnored']
+                db_l.save()
+            except:
+                List.insert(list_id=_list['id'], is_ignored=_list['isIgnored'], board=board).execute()
 
-            else:
-                db_l = List()
-                db_l.list_id = _list['id']
-                db_l.is_ignored = _list['isIgnored']
-                db_l.board = board
-
-            db_l.save()
+        return '200'
 
     def authorize(self, auth_url):
         return redirect(auth_url, 302)
@@ -112,7 +107,3 @@ class _Communication:
 
 
 communication = _Communication()
-
-
-
-
