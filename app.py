@@ -37,7 +37,7 @@ def token():
         print('Token: ' + communication.token)
         print('UserId: ' + communication.user_id)
         return '200'
-    print('/token misstake')
+    print('/token mistake')
     return '405'
 
 
@@ -87,6 +87,20 @@ def member(member_id) -> Member:
 @cross_origin()
 def story_points_from_card(card_id):
     return communication.get_story_points_from_card(card_id)
+
+
+@app.route("/rearrange", methods=["POST"])
+@cross_origin()
+def rearrange():
+    if request.method == "POST":
+        return communication.rearrange(request.json)
+
+
+@app.route('/ignore', methods=["POST"])
+@cross_origin()
+def ignore():
+    if request.method == "POST":
+        return communication.ignore(request.json)
 
 
 if __name__ == '__main__':
