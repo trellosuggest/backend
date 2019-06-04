@@ -2,8 +2,11 @@ from flask import redirect
 import requests
 import json
 import re
+import datetime
 from db_model.list import List
 from db_model.board import Board
+from db_model.member import Member
+from db_model.log import Log
 from busyness_calculation.busyness_calculation import BusynessCalculation
 
 
@@ -74,7 +77,17 @@ class _Communication:
         return json.dumps(res)
 
     def rearrange(self, user_json):
-        return json.dumps(BusynessCalculation.calculate(json.loads(user_json['body'])))
+        actions = json.dumps(BusynessCalculation.calculate(json.loads(user_json['body'])))
+
+        try:
+            Member[self.user_id]
+        except:
+            Member.insert(member_id=self.user_id).execute()
+        member = Member[self.user_id]
+
+        Log.insert(description=actions, date=datetime.datetime.now(), member=member).execute()
+
+        return actions
 
     def ignore(self, list_json):
         list_list = list_json['lists']

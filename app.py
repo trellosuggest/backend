@@ -3,10 +3,6 @@ import typing
 from flask import Flask, request
 from flask_cors import cross_origin
 
-from entity.board import Board
-from entity.card import Card
-from entity.list import List
-from entity.member import Member
 from trello_communication.communication import communication
 import requests
 
@@ -40,43 +36,43 @@ def token():
 
 @app.route("/boards")
 @cross_origin()
-def boards() -> typing.List[Board]:
+def boards():
     return communication.get_boards()
 
 
 @app.route("/lists/<string:list_id>/cards")
 @cross_origin()
-def cards_from_list(list_id) -> typing.List[Card]:
+def cards_from_list(list_id):
     return communication.get_cards_from_list(list_id)
 
 
 @app.route("/boards/<string:board_id>/cards")
 @cross_origin()
-def cards_from_board(board_id) -> typing.List[Card]:
+def cards_from_board(board_id):
     return communication.get_cards_from_board(board_id)
 
 
 @app.route("/boards/<string:board_id>/lists")
 @cross_origin()
-def lists(board_id) -> typing.List[List]:
+def lists(board_id):
     return communication.get_lists(board_id)
 
 
 @app.route("/boards/<string:board_id>/members")
 @cross_origin()
-def members_from_board(board_id) -> typing.List[Member]:
+def members_from_board(board_id):
     return communication.get_members_from_board(board_id)
 
 
 @app.route("/cards/<string:card_id>/members")
 @cross_origin()
-def members_from_card(card_id) -> typing.List[Member]:
+def members_from_card(card_id):
     return communication.get_members_from_card(card_id)
 
 
 @app.route("/members/<string:member_id>")
 @cross_origin()
-def member(member_id) -> Member:
+def member(member_id):
     return communication.get_member(member_id)
 
 
