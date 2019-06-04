@@ -14,7 +14,7 @@ class BusynessCalculation:
         while (sum_max != sum_min
                and sum_max > sum_min + people[0]['cards'][0]['story']):
 
-            moves.append({'what': people[0]['cards'][0]['name'],
+            moves.append({'what': people[0]['cards'][0],
                           'from': people[0]['fullName'],
                           'to': people[-1]['fullName']})
 
